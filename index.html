@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad La Movida SST</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Configuración de Tailwind extendida con la paleta de la marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            teal: '#007b85',
+                            dark: '#00205b',
+                            green: '#70ad47',
+                            yellow: '#ffb600',
+                            lightBg: '#f8fafc'
+                        },
+                        whatsapp: '#25D366',
+                        whatsappDark: '#128C7E',
+                        telegram: '#0088cc',
+                        telegramDark: '#0077b5'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =========================================
+           1. BASE Y VARIABLES DE MARCA
+           ========================================= */
+        body {
+            background-color: #f8fafc; /* Fondo Light Bg */
+            color: #475569; /* Slate 600 - Body Text */
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* =========================================
+           2. FONDOS Y AMBIENTACIÓN (Tech Grid & Glow)
+           ========================================= */
+        /* Cuadrícula Técnica */
+        .tech-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(0, 32, 91, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 32, 91, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Luces Ambientales (Glows) */
+        .bg-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            animation: pulse-glow 6s infinite alternate ease-in-out;
+        }
+        
+        .glow-teal {
+            top: -5%; left: -5%; width: 50vw; height: 50vw;
+            background: rgba(0, 123, 133, 0.08); /* Teal al 8% */
+        }
+        
+        .glow-green {
+            bottom: -10%; right: -5%; width: 60vw; height: 60vw;
+            background: rgba(112, 173, 71, 0.06); /* Green al 6% */
+            animation-delay: 2s;
+        }
+
+        .glow-yellow {
+            top: 40%; left: 30%; width: 40vw; height: 40vw;
+            background: rgba(255, 182, 0, 0.05); /* Yellow al 5% */
+            animation-delay: 4s;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.6; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* =========================================
+           3. ANIMACIONES Y ESTILOS DE COMPONENTES
+           ========================================= */
+        /* Flotación del Logo (8px) */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .logo-container {
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(0, 32, 91, 0.15));
+            border: 4px solid rgba(255,255,255,0.8);
+            transition: all 0.4s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05) translateY(-8px);
+            filter: drop-shadow(0 15px 30px rgba(0, 123, 133, 0.25));
+            animation-play-state: paused;
+        }
+
+        /* Gradiente para H1 */
+        .text-brand-gradient {
+            background: linear-gradient(135deg, #00205b 0%, #007b85 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* =========================================
+           4. TARJETAS: GLASSMORPHISM PREMIUM
+           ========================================= */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9); /* Blanco 90% */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 24px; /* rounded-3xl */
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03); /* Sombra Base muy suave */
+            position: relative;
+            overflow: hidden; /* Necesario para la línea mágica superior */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Línea Mágica (Invisible por defecto) */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00205b, #007b85, #70ad47); /* Dark -> Teal -> Green */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        /* Interacción Hover */
+        .glass-card:hover {
+            transform: translateY(-8px); /* Elevación */
+            /* Sombra tintada en Teal */
+            box-shadow: 0 20px 40px -5px rgba(0, 123, 133, 0.12);
+            border-color: rgba(0, 123, 133, 0.1);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1; /* Aparece la Línea Mágica */
+        }
+        
+        /* QR Code Styling */
+        .qr-code {
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover .qr-code {
+            border-color: rgba(0, 123, 133, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(0, 123, 133, 0.15);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+
+    <!-- Ambientación de Fondo (Diseño Base) -->
+    <div class="tech-grid"></div>
+    <div class="bg-glow glow-teal"></div>
+    <div class="bg-glow glow-green"></div>
+    <div class="bg-glow glow-yellow"></div>
+
+    <main class="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center">
+        
+        <!-- HEADER / LOGO -->
+        <header class="text-center mb-16 flex flex-col items-center">
+            <div class="logo-container w-48 h-48 sm:w-56 sm:h-56 mb-8 rounded-full bg-white flex items-center justify-center shadow-lg">
+                <img src="https://assets.poap.xyz/cec12a20-fefb-4199-9cc0-b1ece87fe44d.png" alt="Logo La Movida SST" class="w-full h-full object-cover rounded-full">
+            </div>
+            
+            <!-- H1 con ExtraBold (800) -->
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-brand-gradient">
+                La Movida de SST
+            </h1>
+            
+            <!-- Subtítulo con Light (300) -->
+            <p class="text-lg sm:text-xl font-light text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                Únete a nuestras comunidades y canales oficiales. Elige la plataforma de tu preferencia y sé parte del movimiento.
+            </p>
+        </header>
+
+        <!-- GRID DE ENLACES (Glassmorphism) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+
+            <!-- 1. Comunidad Movida SST (WhatsApp) -->
+            <div class="glass-card p-8 flex flex-col items-center text-center group">
+                <!-- Icono usando el color Core (Teal) como base integradora -->
+                <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mb-6 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all duration-300 shadow-inner">
+                    <i class="fa-brands fa-whatsapp text-4xl"></i>
+                </div>
+                <!-- Títulos H2 en Dark Navy y Extrabold/Bold -->
+                <h2 class="text-xl font-bold mb-2 text-brand-dark">Comunidad Movida SST</h2>
+                <!-- Texto Body regular (400) -->
+                <p class="text-sm font-normal text-slate-600 mb-6 flex-grow">Grupo principal de la comunidad en WhatsApp.</p>
+                
+                <!-- QR renderizado con el color Dark Navy oficial de la marca -->
+                <img src="https://quickchart.io/qr?text=https%3A%2F%2Fchat.whatsapp.com%2FJdmSldDa2hg1Cdo8qvJChO&dark=00205b&size=200&margin=2" alt="QR Comunidad Movida SST" class="qr-code w-32 h-32 mb-6 rounded-xl bg-white p-2">
+
+                <!-- Botones: Mantenemos el color de la plataforma para UX, pero con tipografía Bold -->
+                <a href="https://chat.whatsapp.com/JdmSldDa2hg1Cdo8qvJChO" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-6 rounded-xl font-bold bg-whatsapp text-white hover:bg-whatsappDark transition-all duration-300 shadow-lg shadow-whatsapp/20 flex items-center justify-center gap-2 group-hover:-translate-y-1">
+                    <span>Unirme al Grupo</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+
+            <!-- 2. Estados de Venezuela (WhatsApp) -->
+            <div class="glass-card p-8 flex flex-col items-center text-center group">
+                <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mb-6 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all duration-300 shadow-inner">
+                    <i class="fa-brands fa-whatsapp text-4xl"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-brand-dark">SST Estados de Venezuela</h2>
+                <p class="text-sm font-normal text-slate-600 mb-6 flex-grow">Comunidad regional para Venezuela.</p>
+                
+                <img src="https://quickchart.io/qr?text=https%3A%2F%2Fchat.whatsapp.com%2FEXAbGQBbdxK8cxmG5qjEC3&dark=00205b&size=200&margin=2" alt="QR SST Estados de Venezuela" class="qr-code w-32 h-32 mb-6 rounded-xl bg-white p-2">
+
+                <a href="https://chat.whatsapp.com/EXAbGQBbdxK8cxmG5qjEC3" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-6 rounded-xl font-bold bg-whatsapp text-white hover:bg-whatsappDark transition-all duration-300 shadow-lg shadow-whatsapp/20 flex items-center justify-center gap-2 group-hover:-translate-y-1">
+                    <span>Unirme al Grupo</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+
+            <!-- 3. Academia Movida SST (WhatsApp) -->
+            <div class="glass-card p-8 flex flex-col items-center text-center group">
+                <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mb-6 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all duration-300 shadow-inner">
+                    <i class="fa-brands fa-whatsapp text-4xl"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-brand-dark">Academia Movida SST</h2>
+                <p class="text-sm font-normal text-slate-600 mb-6 flex-grow">Espacio dedicado al aprendizaje y academia.</p>
+                
+                <img src="https://quickchart.io/qr?text=https%3A%2F%2Fchat.whatsapp.com%2FEXAbGQBbdxK8cxmG5qjEC3&dark=00205b&size=200&margin=2" alt="QR Academia Movida SST" class="qr-code w-32 h-32 mb-6 rounded-xl bg-white p-2">
+
+                <a href="https://chat.whatsapp.com/EXAbGQBbdxK8cxmG5qjEC3" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-6 rounded-xl font-bold bg-whatsapp text-white hover:bg-whatsappDark transition-all duration-300 shadow-lg shadow-whatsapp/20 flex items-center justify-center gap-2 group-hover:-translate-y-1">
+                    <span>Unirme al Grupo</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+
+            <!-- 4. Mentoring en SST (Canal WhatsApp) -->
+            <div class="glass-card p-8 flex flex-col items-center text-center group">
+                <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mb-6 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all duration-300 shadow-inner relative">
+                    <i class="fa-brands fa-whatsapp text-4xl"></i>
+                    <!-- Accent Color (Brand Yellow) para notificaciones/etiquetas -->
+                    <span class="absolute -bottom-2 -right-2 bg-brand-yellow text-brand-dark text-xs px-2.5 py-0.5 rounded-full font-bold shadow-sm">Canal</span>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-brand-dark">Mentoring en SST</h2>
+                <p class="text-sm font-normal text-slate-600 mb-6 flex-grow">Canal oficial de WhatsApp para noticias y mentoring.</p>
+                
+                <img src="https://quickchart.io/qr?text=https%3A%2F%2Fwhatsapp.com%2Fchannel%2F0029Va0mlH5Jf05mrcCz8r3e&dark=00205b&size=200&margin=2" alt="QR Mentoring en SST" class="qr-code w-32 h-32 mb-6 rounded-xl bg-white p-2">
+
+                <a href="https://whatsapp.com/channel/0029Va0mlH5Jf05mrcCz8r3e" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-6 rounded-xl font-bold border-2 border-whatsapp text-whatsapp hover:bg-whatsapp hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group-hover:-translate-y-1">
+                    <span>Seguir Canal</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+
+            <!-- 5. Grupo Telegram -->
+            <div class="glass-card p-8 flex flex-col items-center text-center group">
+                <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mb-6 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all duration-300 shadow-inner">
+                    <i class="fa-brands fa-telegram text-4xl"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-brand-dark">Grupo Movida SST</h2>
+                <p class="text-sm font-normal text-slate-600 mb-6 flex-grow">Nuestro grupo interactivo oficial en Telegram.</p>
+                
+                <img src="https://quickchart.io/qr?text=https%3A%2F%2Ft.me%2Fmovidasst&dark=00205b&size=200&margin=2" alt="QR Grupo Movida SST" class="qr-code w-32 h-32 mb-6 rounded-xl bg-white p-2">
+
+                <a href="https://t.me/movidasst" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-6 rounded-xl font-bold bg-telegram text-white hover:bg-telegramDark transition-all duration-300 shadow-lg shadow-telegram/20 flex items-center justify-center gap-2 group-hover:-translate-y-1">
+                    <span>Unirme al Grupo</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+
+            <!-- 6. Canal Telegram -->
+            <div class="glass-card p-8 flex flex-col items-center text-center group">
+                <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mb-6 text-brand-teal group-hover:bg-brand-teal group-hover:text-white transition-all duration-300 shadow-inner relative">
+                    <i class="fa-brands fa-telegram text-4xl"></i>
+                    <span class="absolute -bottom-2 -right-2 bg-brand-yellow text-brand-dark text-xs px-2.5 py-0.5 rounded-full font-bold shadow-sm">Canal</span>
+                </div>
+                <h2 class="text-xl font-bold mb-2 text-brand-dark">Canal Movida SST</h2>
+                <p class="text-sm font-normal text-slate-600 mb-6 flex-grow">Canal de difusión para actualizaciones rápidas.</p>
+                
+                <img src="https://quickchart.io/qr?text=https%3A%2F%2Ft.me%2Fcanalmovidasst&dark=00205b&size=200&margin=2" alt="QR Canal Movida SST" class="qr-code w-32 h-32 mb-6 rounded-xl bg-white p-2">
+
+                <a href="https://t.me/canalmovidasst" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-6 rounded-xl font-bold border-2 border-telegram text-telegram hover:bg-telegram hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center gap-2 group-hover:-translate-y-1">
+                    <span>Seguir Canal</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <footer class="mt-20 mb-8 text-center text-slate-500 text-sm font-light">
+            <p>&copy; 2026 La Movida de SST. Todos los derechos reservados.</p>
+        </footer>
+    </main>
+
+</body>
+</html>
